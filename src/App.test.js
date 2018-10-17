@@ -3,8 +3,10 @@ import ReactDOM from 'react-dom';
 import renderer from 'react-test-renderer';
 import Enzyme, { shallow } from 'enzyme';
 import Adapter from 'enzyme-adapter-react-16';
-import App, { Search, Button, Table, updateSearchTopStoriesState } from './App';
-
+import App, { updateSearchTopStoriesState } from './App';
+import Search from './components/Search'
+import Table from './components/Table'
+import { Button } from './components/Buttons'
 Enzyme.configure({ adapter: new Adapter() });
 
 describe('App', () => {
@@ -14,7 +16,7 @@ describe('App', () => {
     ReactDOM.render(<App />, div);
     ReactDOM.unmountComponentAtNode(div);
   });
-  
+
   test('has a valid snapshot', () => {
     const component = renderer.create(
       <App />
@@ -22,8 +24,8 @@ describe('App', () => {
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
   });
-  
-}); 
+
+});
 
 describe('Search', () => {
 
@@ -41,7 +43,7 @@ describe('Search', () => {
     expect(tree).toMatchSnapshot();
   });
 
-}); 
+});
 
 describe('Button', () => {
   it('renders without crashing', () => {
@@ -68,17 +70,17 @@ describe('Table', () => {
       { title: '2', author: '2', num_comments: 1, points: 2, objectID: 'z' }
     ],
     sortKey: 'TITLE',
-    isSortReverse: false, 
+    isSortReverse: false,
   };
 
   it('renders without crashing', () => {
     const div = document.createElement('div');
-    ReactDOM.render(<Table { ...props } />, div);
+    ReactDOM.render(<Table {...props} />, div);
   });
 
   test('has a valid snapshot', () => {
     const component = renderer.create(
-      <Table { ...props } />
+      <Table {...props} />
     );
     let tree = component.toJSON();
     expect(tree).toMatchSnapshot();
@@ -86,7 +88,7 @@ describe('Table', () => {
 
   it('shows two items in list', () => {
     const element = shallow(
-      <Table { ...props } />
+      <Table {...props} />
     );
 
     expect(element.find('.table-row').length).toBe(2);
@@ -104,12 +106,12 @@ describe('updateSearchTopStoriesState', () => {
     searchKey: 'redux',
   };
 
-  const expectedStateChange = {  
+  const expectedStateChange = {
     results: {
       redux: { hits: [2], page: 3 }
     },
     isLoading: false,
-  }; 
+  };
 
   const updater = updateSearchTopStoriesState([2], 3);
 
