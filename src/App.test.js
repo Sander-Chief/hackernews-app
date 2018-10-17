@@ -58,6 +58,14 @@ describe('Button', () => {
     expect(tree).toMatchSnapshot();
   });
 
+  it('Test click event', () => {
+    const mockCallBack = jest.fn();
+
+    const button = shallow((<Button onClick={mockCallBack}>Ok!</Button>));
+    button.find('button').simulate('click');
+    expect(mockCallBack.mock.calls.length).toEqual(1);
+  });
+
 });
 
 describe('Table', () => {
@@ -90,6 +98,14 @@ describe('Table', () => {
     );
 
     expect(element.find('.table-row').length).toBe(2);
+  });
+
+  it('can render empty array', () => {
+    const element = shallow(
+      <Table {...{ ...props, list: [] }} />
+    );
+
+    expect(element.find('.table-row').length).toBe(0);
   });
 
 });
